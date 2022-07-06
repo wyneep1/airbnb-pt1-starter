@@ -59,23 +59,6 @@ describe("Booking", () => {
       
     })
 
-    describe("POST bookings/listings/:listingId", () => {
-      test ("Authed user can book a listing they don't own", async () => {
-        const listingId = testListingIds[0]
-        const listing = await Listing.fetchListingById(listingId)
-        const data = {
-         newBooking: newBooking 
-        }
-
-        const newBooking ={
-            startDate: new Date ("10-08-2021"),
-            endDate: new Date ("10-10-2021"),
-            guests: 1
-          }
-
-        
-      })
-    })
 
   describe("Test listBookingsFromUser", () => {
     test("Fetches all of the authenticated users' bookings", async () => {
