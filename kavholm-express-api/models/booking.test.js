@@ -15,6 +15,68 @@ afterEach(commonAfterEach)
 afterAll(commonAfterAll)
 
 describe("Booking", () => {
+  describe("Test createBooking", ()=> {
+    test("Can create a new booking with valid params", async () => {
+      const user = { username: "jlo" }
+      const listingId = testListingIds[0]
+      const listing = await Listing.fetchListingById(listingId)
+    
+      const newBooking = {
+        startDate: new Date ("10-08-2021"),
+        endDate: new Date ("10-10-2021"),
+        guests: 1
+      }
+      const booking = await Booking.createBooking({newBooking, listing, user})
+
+      expect(booking).toEqual({
+        id: expect.any(Number),
+        startDate: newBooking.startDate,
+        endDate: newBooking.endDate,
+        paymentMethod: "card",
+        guests: newBooking.guests,
+        totalCost: expect.anything(),
+        listingId: listingId,
+        username: "jlo",
+        hostUsername: expect.anything(),
+        userId: expect.any(Number),
+        createdAt: expect.any(Date),
+      })
+    })
+      test("Throws error with invalid params", async() => {
+        const user = { username: "jlo" }
+        const listingId = testListingIds[0]
+        const listing = await Listing.fetchListingById(listingId)
+        const newBooking = {endDate:new Date("10-10-2021")}
+        try{
+
+          await Booking.createBooking({newBooking, listing, user})
+        }
+        catch (err){
+          expect(err instanceof BadRequestError).toBeTruthy()
+        }
+
+        })
+      
+    })
+
+    describe("POST bookings/listings/:listingId", () => {
+      test ("Authed user can book a listing they don't own", async () => {
+        const listingId = testListingIds[0]
+        const listing = await Listing.fetchListingById(listingId)
+        const data = {
+         newBooking: newBooking 
+        }
+
+        const newBooking ={
+            startDate: new Date ("10-08-2021"),
+            endDate: new Date ("10-10-2021"),
+            guests: 1
+          }
+
+        
+      })
+    })
+
   describe("Test listBookingsFromUser", () => {
     test("Fetches all of the authenticated users' bookings", async () => {
       const user = { username: "jlo" }
